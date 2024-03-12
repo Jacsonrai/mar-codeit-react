@@ -1,0 +1,9 @@
+.link-nav {
+  text-decoration: none;
+}
+a {
+  color: gray;
+}
+a:hover {
+  color: blue;
+}
