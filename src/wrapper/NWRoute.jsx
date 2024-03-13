@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Outlet, Route, Routes } from "react-router-dom";
 import Home from "../pages/Home";
 import Global from "../pages/Gobal";
@@ -11,8 +11,20 @@ import Nation from "../pages/Nation";
 import AuthWrapper from "./authwrapper";
 import Dashboard from "../pages/admin/Setting";
 import Setting from "../pages/admin/Setting";
+import { useSelector } from "react-redux";
+import { useLocation } from "react-router-dom";
 // import { Provider } from "react-redux";
 const NWRoute = () => {
+  const authCtx = useSelector((state) => state.authReducer);
+  const { isLoggedIn } = authCtx;
+  const path = useLocation().pathname;
+  useEffect(() => {
+    if (isLoggedIn) {
+      if (path === "/login") {
+        window.location.href = "/admin/dashboard";
+      }
+    }
+  }, [path, isLoggedIn]);
   const navItems = [
     {
       name: "Home",
@@ -30,6 +42,10 @@ const NWRoute = () => {
       name: "Politics",
       path: "/politics",
     },
+    {
+      name: "Dashboard",
+      path: "/admin/dashboard",
+    },
   ];
   const adminRoute = [
     {
@@ -41,6 +57,7 @@ const NWRoute = () => {
       path: "/setting",
     },
   ];
+
   return (
     <>
       <Navbar items={navItems} />

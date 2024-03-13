@@ -1,11 +1,9 @@
-import React, { useState } from "react";
+import React from "react";
 import { useSelector } from "react-redux";
 
 const AuthWrapper = ({ children }) => {
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
   const authCtx = useSelector((state) => state.authReducer);
-  console.log(authCtx, "auth");
-
+  const { isLoggedIn } = authCtx;
   if (!isLoggedIn) {
     window.location.href = "/login";
   }

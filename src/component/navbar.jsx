@@ -3,11 +3,24 @@ import NWButton from "./NWButton";
 import { Link, useNavigate } from "react-router-dom";
 import "./Navbar.css";
 import { useLocation } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 const Navbar = ({ items }) => {
   const loc = useLocation().pathname;
   const nav = useNavigate();
+  const dispatch = useDispatch();
+  const authCtx = useSelector((state) => state.authReducer);
+  const { isLoggedIn } = authCtx;
   const handleLogin = () => {
     nav("/login");
+  };
+  const handleLogout = () => {
+    dispatch({
+      type: "LOGIN",
+      payload: {
+        isLoggedIn: false,
+      },
+    });
+    localStorage.removeItem("news_token");
   };
   return (
     <>
@@ -29,24 +42,35 @@ const Navbar = ({ items }) => {
           </button>
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
             <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-              {items.map((item, index) => {
-                return (
-                  <Link to={item.path} className="link-nav" key={index}>
-                    <li className="nav-item">
-                      <a
-                        className="nav-link active"
-                        style={{
-                          color: item.path === loc ? "blue" : "black",
-                        }}
-                        aria-current="page"
-                        href="#"
-                      >
-                        {item.name}
-                      </a>
-                    </li>
-                  </Link>
-                );
-              })}
+              {items.map((item, index) => (
+                <Link
+                  to={item.path}
+                  className="link-nav"
+                  style={{
+                    textDecoration: "none",
+                  }}
+                  key={index}
+                >
+                  <li
+                    className="nav-item"
+                    style={{
+                      textDecoration: "none",
+                    }}
+                  >
+                    <a
+                      className="nav-link active"
+                      style={{
+                        color: item.path === loc ? "blue" : "black",
+                        textDecoration: "none",
+                      }}
+                      aria-current="page"
+                      href="#"
+                    >
+                      {item.name}
+                    </a>
+                  </li>
+                </Link>
+              ))}
             </ul>
             <div
               className="d-flex"
@@ -54,17 +78,19 @@ const Navbar = ({ items }) => {
                 gap: 10,
               }}
             >
-              <NWButton onClick={handleLogin}>Login</NWButton>
-
-              <Link to={"/signup"}>
-                <NWButton name="search" type="submit">
-                  Signup
+              {!isLoggedIn && <NWButton onClick={handleLogin}>Login</NWButton>}
+              {!isLoggedIn && (
+                <Link to={"/signup"}>
+                  <NWButton name="search" type="submit">
+                    Signup
+                  </NWButton>
+                </Link>
+              )}
+              {isLoggedIn && (
+                <NWButton name="search" type="submit" onClick={handleLogout}>
+                  Logout
                 </NWButton>
-              </Link>
-
-              <NWButton name="search" type="submit">
-                Logout
-              </NWButton>
+              )}
             </div>
           </div>
         </div>

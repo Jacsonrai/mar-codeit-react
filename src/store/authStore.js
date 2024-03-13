@@ -1,6 +1,6 @@
-// const token=localStorage.getItem("_token_")??null
+const token=localStorage.getItem("news_token")??null
 const initialState={
-    isLoggedIn:false
+    isLoggedIn:token!==null?true:false
     // token:token
 }
 export const authReducer=(state=initialState,action)=>{
@@ -8,14 +8,10 @@ export const authReducer=(state=initialState,action)=>{
         case "LOGIN":
             return{
                 ...state,
-                isLoggedIn:action.payload.isLoggedIn,
-               
-            }
-        
+                isLoggedIn:action.payload.isLoggedIn,       
+            }  
         default:
             return state
     }
-
-
 }
 

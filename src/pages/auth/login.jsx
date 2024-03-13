@@ -1,15 +1,24 @@
 import React, { useState } from "react";
 import NWButton from "../../component/NWButton";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 
 const Login = () => {
   const [errorMessage, setErrorMessage] = useState("");
+  const dispatch = useDispatch();
   const nav = useNavigate();
   const handleSubmit = (e) => {
     e.preventDefault();
     const { email, password } = e.target.elements;
     if (email.value === "admin@gmail.com" && password.value === "password") {
-      nav("/dashboard");
+      dispatch({
+        type: "LOGIN",
+        payload: {
+          isLoggedIn: true,
+        },
+      });
+      localStorage.setItem("news_token", "aaksjdlajsdaskdjaksdsdasdajhsdk");
+      nav("/admin/dashboard");
     }
 
     setErrorMessage("password or email doesn't match");
