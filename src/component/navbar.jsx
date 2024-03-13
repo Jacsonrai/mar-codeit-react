@@ -42,35 +42,67 @@ const Navbar = ({ items }) => {
           </button>
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
             <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-              {items.map((item, index) => (
-                <Link
-                  to={item.path}
-                  className="link-nav"
-                  style={{
-                    textDecoration: "none",
-                  }}
-                  key={index}
-                >
-                  <li
-                    className="nav-item"
+              {items.map((item, index) =>
+                item.name === "Dashboard" ? (
+                  isLoggedIn && (
+                    <Link
+                      to={item.path}
+                      className="link-nav"
+                      style={{
+                        textDecoration: "none",
+                      }}
+                      key={index}
+                    >
+                      <li
+                        className="nav-item"
+                        style={{
+                          textDecoration: "none",
+                        }}
+                      >
+                        <a
+                          className="nav-link active"
+                          style={{
+                            color: item.path === loc ? "blue" : "black",
+                            textDecoration: "none",
+                          }}
+                          aria-current="page"
+                          href="#"
+                        >
+                          {item.name}
+                        </a>
+                      </li>
+                    </Link>
+                  )
+                ) : (
+                  <Link
+                    to={item.path}
+                    className="link-nav"
                     style={{
                       textDecoration: "none",
                     }}
+                    key={index}
                   >
-                    <a
-                      className="nav-link active"
+                    <li
+                      className="nav-item"
                       style={{
-                        color: item.path === loc ? "blue" : "black",
                         textDecoration: "none",
                       }}
-                      aria-current="page"
-                      href="#"
                     >
-                      {item.name}
-                    </a>
-                  </li>
-                </Link>
-              ))}
+                      <a
+                        className="nav-link active"
+                        style={{
+                          color: item.path === loc ? "blue" : "black",
+                          textDecoration: "none",
+                        }}
+                        aria-current="page"
+                        href="#"
+                      >
+                        {item.name}
+                      </a>
+                    </li>
+                  </Link>
+                )
+              )}
             </ul>
             <div
               className="d-flex"
