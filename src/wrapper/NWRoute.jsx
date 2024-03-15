@@ -9,10 +9,14 @@ import Login from "../pages/auth/login";
 import Signup from "../pages/auth/register";
 import Nation from "../pages/Nation";
 import AuthWrapper from "./authwrapper";
-import Dashboard from "../pages/admin/Setting";
+import Dashboard from "../pages/admin/Dashboard";
 import Setting from "../pages/admin/Setting";
 import { useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
+import DashboardLayout from "./DashboardLayout";
+import Category from "../pages/admin/Category";
+import News from "../pages/admin/News";
+import NewsSingle from "../pages/NewsSingle";
 // import { Provider } from "react-redux";
 const NWRoute = () => {
   const authCtx = useSelector((state) => state.authReducer);
@@ -56,6 +60,14 @@ const NWRoute = () => {
       element: <Setting />,
       path: "/setting",
     },
+    {
+      element: <Category />,
+      path: "/category",
+    },
+    {
+      element: <News />,
+      path: "/news",
+    },
   ];
 
   return (
@@ -69,10 +81,13 @@ const NWRoute = () => {
         <Route path="/political" element={<Polittics />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
+        <Route path="/news/:newId" element={<NewsSingle />} />
         <Route
           element={
             <AuthWrapper>
-              <Outlet />
+              <DashboardLayout>
+                <Outlet />
+              </DashboardLayout>
             </AuthWrapper>
           }
         >

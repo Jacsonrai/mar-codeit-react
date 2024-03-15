@@ -1,6 +1,12 @@
 import React from "react";
+import { MdDelete } from "react-icons/md";
+import { GoPencil } from "react-icons/go";
+import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
 const NewsCard = ({ title, image, description, category }) => {
+  const authCtx = useSelector((state) => state.authReducer);
+  const { isLoggedIn } = authCtx;
   return (
     <div
       className="card"
@@ -11,7 +17,14 @@ const NewsCard = ({ title, image, description, category }) => {
     >
       <img src={image} className="card-img-top" alt="..." />
       <div className="card-body">
-        <h5 className="card-title">{title}</h5>
+        <Link
+          to={"/news/1"}
+          style={{
+            textDecoration: "none",
+          }}
+        >
+          <h5 className="card-title">{title}</h5>
+        </Link>
         <p
           style={{
             background: "blue",
@@ -28,6 +41,37 @@ const NewsCard = ({ title, image, description, category }) => {
           {category}
         </p>
         <p className="card-text">{description}</p>
+        {isLoggedIn && (
+          <div>
+            <button
+              style={{
+                background: "transparent",
+                border: "none",
+                outline: "none",
+              }}
+            >
+              <MdDelete
+                style={{
+                  fontSize: "1.6rem",
+                  color: "red",
+                }}
+              />
+            </button>
+            <button
+              style={{
+                background: "transparent",
+                border: "none",
+                outline: "none",
+              }}
+            >
+              <GoPencil
+                style={{
+                  fontSize: "1.6rem",
+                }}
+              />
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

@@ -7,21 +7,39 @@ const Login = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const dispatch = useDispatch();
   const nav = useNavigate();
-  const handleSubmit = (e) => {
+  const loginUrl = "http://localhost:8000/auth/login";
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const { email, password } = e.target.elements;
-    if (email.value === "admin@gmail.com" && password.value === "password") {
+    const payload = {
+      email: email.value,
+      password: password.value,
+    };
+
+    const response = await fetch(loginUrl, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    });
+    const resJson = await response.json();
+
+    if (resJson.status === 404) {
+      setErrorMessage(resJson.message);
+    }
+    if (resJson.status === 200) {
       dispatch({
         type: "LOGIN",
         payload: {
           isLoggedIn: true,
         },
       });
-      localStorage.setItem("news_token", "aaksjdlajsdaskdjaksdsdasdajhsdk");
+      localStorage.setItem("news_token", resJson.data.token);
       nav("/admin/dashboard");
     }
 
-    setErrorMessage("password or email doesn't match");
     setTimeout(() => {
       setErrorMessage("");
     }, 3000);
@@ -36,6 +54,7 @@ const Login = () => {
       }}
     >
       <form onSubmit={(e) => handleSubmit(e)}>
+        <h4>Login with your existing credentials</h4>
         {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
         <div class="form-group">
           <label for="exampleInputEmail1">Email address</label>
