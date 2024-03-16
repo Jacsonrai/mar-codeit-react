@@ -20,7 +20,7 @@ const NewsCard = ({ title, image, description, category }) => {
         <Link
           to={"/news/1"}
           style={{
-            textDecoration: "none",
+            textDecoration: "nonecd",
           }}
         >
           <h5 className="card-title">{title}</h5>
